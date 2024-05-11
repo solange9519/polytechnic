@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+		<html>
+			<head>
+				<meta charset="utf-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<title>Polytechnic School App</title>
+				<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+				<link rel="icon" href="assets/img/favicon.png">
+				
+				<!-- Fonts and icons -->
+				<script src="assets/js/plugin/webfont/webfont.min.js"></script>
+
+				<script>
+					WebFont.load({
+						google: {"families":["Lato:300,400,700,900"]},
+						custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['assets/css/fonts.min.css']},
+						active: function() {
+							sessionStorage.fonts = true;
+						}
+					});
+				</script>
+
+				<!-- CSS Files -->
+				<link rel="stylesheet" type="text/css" href="assets/css/base.css">
+				<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+				<link rel="stylesheet" href="assets/css/atlantis.css">
+				<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+				<link rel="stylesheet" href="assets/Ionicons/css/ionicons.min.css">
+				<link rel="stylesheet" href="assets/css/muli.css"/>
+				
+				<script type="text/javascript">
+					function googleTranslateElementInit() {
+						new google.translate.TranslateElement({pageLanguage: 'fr'}, 'google_translate_element');
+					}
+				</script>
+				
+				<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
+				<link rel="stylesheet" href="assets/css/translatehid.css">
+			</head>
+
+	
+			<body data-background-color="bg2">
+				<div class="wrapper fullheight-side no-box-shadow-style">
+					<div class="logo-header position-fixed" data-background-color="purple2">
+						<a href="#" class="logo">
+							<img src="assets/img/logo.png" width="85%" class="navbar-brand">
+						</a>
+						<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon">
+								<i class="icon-menu"></i>
+							</span>
+						</button>
+						<button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+						<div class="nav-toggle">
+							<button class="btn btn-toggle toggle-sidebar">
+								<i class="icon-menu"></i>
+							</button>
+						</div>
+					</div>
+					
+					<!-- Sidebar -->
+					<div class="sidebar sidebar-style-2" data-background-color="purple2">	
+						<div class="sidebar-wrapper scrollbar scrollbar-inner">
+							<div class="sidebar-content">
+								<div class="user">
+									<div class="avatar-sm float-left mr-2">
+									</div>
+									<div class="info">
+										<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+											<span>
+												<?php echo $donnees['NomComplet'];?>
+												<span class="user-level"><i class="fa fa-circle text-success" style="font-size:10px"></i> En ligne</span>
+												<span class="caret"></span>
+											</span>
+										</a>
+										<div class="clearfix"></div>
+
+										<div class="collapse in" id="collapseExample">
+											<ul class="nav">
+												<li>
+													<a href="">
+														<span class="link-collapse">Notifications</span>
+													</a>
+												</li>
+												<li>
+													<a href="">
+														<span class="link-collapse">Support</span>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								
+								
+								<ul class="nav">
+									<li class="nav-section">
+										<span class="sidebar-mini-icon">
+											<i class="fa fa-ellipsis-h"></i>
+										</span>
+										<h4 class="text-section" style="color:#ffffff">Situation au <?php echo date("d/m/Y")?></h4>
+									</li>
+									<li class="nav-item">
+										<a data-toggle="collapse" href="#soldeducompte" class="collapsed" aria-expanded="false" style="background-color:#ff7f00">
+											<i class="far fa-money-bill-alt"></i>
+											<p class="fw-extrabold">Scolarité : <?php echo $donnees['Montant'] ." f cfa";?></p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse" id="soldeducompte">
+										</div>
+									</li>
+									<li class="nav-item active">
+										<a data-toggle="collapse" href="#mescomptes" class="collapsed" aria-expanded="false">
+											<i class="link-icon icon-user"></i>
+											<p>Comptes Etudiant</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse" id="mescomptes"></div>
+									</li>
+									
+									<li class="nav-item">
+										<a data-toggle="collapse" href="#mesdocuments">
+											<i class="link-icon icon-film"></i>
+											<p>Documents</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse" id="mesdocuments">
+											<ul class="nav nav-collapse">
+												<li>
+													<a href="../../mes-documents/mes-releves-de-compte/">
+														<span class="sub-item">Rélevés de note</span>
+													</a>
+												</li>
+												<li>
+													<a href="../../mes-documents/mon-rib/">
+														<span class="sub-item">Télécharger mon bulletin</span>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</li>
+									
+									<li class="nav-item">
+										<a data-toggle="collapse" href="#mesmessages">
+											<i class="far fa-envelope"></i>
+											<p>Messages</p>
+											<?php 
+												$requetMessage = "SELECT * FROM messages WHERE myId=$id and notiMessage='oui'";	
+												$result = mysqli_query($db,$requetMessage);      
+												$count = mysqli_num_rows($result);
+		
+												if($count!=0){
+													
+												?>
+													<span onclick="showMesssage(this);" id="mess2" class="messager badge badge-danger"><?php echo $count;?></span>
+												<?php
+												}else{
+												?>
+													<span class="caret"></span>
+												<?php
+												}
+											?>
+										</a>
+										<div class="collapse" id="mesmessages">
+											<ul class="nav nav-collapse">
+												<li>
+													<a href="../../../mes-messages/?param=nouveau-message">
+														<span class="sub-item">Nouveau message</span>
+													</a>
+												</li>
+												<li>
+													<a href="../../mes-messages/index.php?param=recu">
+														<span class="sub-item">Message reçu</span>
+													</a>
+												</li>
+												<li>
+													<a href="../../mes-messages/index.php?param=envoye">
+														<span class="sub-item">Message envoyé</span>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</li>
+									
+									<li class="nav-item">
+										<a href="../../mes-parametres/index.php?param=notifications">
+											<i class="fa fa-bell"></i>
+											<p>Notifications</p>
+										</a>
+									</li>
+									
+									<li class="nav-item">
+										<a href="../../mes-messages/index.php?param=nouveau-message">
+											<i class="link-icon icon-earphones-alt"></i>
+											<p>Support</p>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					
+
+					<!-- Navbar Header -->
+					<nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+						<div class="container-fluid">
+							<div class="collapse" id="search-nav">
+								<form class="navbar-left navbar-form nav-search mr-md-3" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<button type="submit" class="btn btn-search pr-1">
+												<i class="fa fa-search search-icon"></i>
+											</button>
+										</div>
+										<input type="text" placeholder="" class="form-control">
+									</div>
+								</form>
+							</div>
+
+							<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+								<li class="nav-item dropdown hidden-caret">
+									<a class="nav-link dropdown-toggle" href="#" onclick="showMesssage(this);" id="messageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-envelope"></i>
+
+										<?php 
+											if($count !=0){	
+											?>
+												<span id="mess1" class="message"><?php echo $count;?></span>
+											<?php
+											}else{
+												
+											}
+											?>
+												<script>
+													function showMesssage() {
+														window.location = "../../mes-messages/";
+													}
+												</script>
+											<?php
+										?>
+									</a>
+								</li>
+								
+								<li class="nav-item dropdown hidden-caret">
+									<a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-bell"></i>
+									</a>
+									<ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+										<li>
+											<div class="dropdown-title">Aucune notification</div>
+										</li>
+									</ul>
+								</li>
+
+								<li class="nav-item dropdown hidden-caret">
+									<a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+										<i class="fas fa-layer-group"></i>
+									</a>
+									<div class="dropdown-menu quick-actions quick-actions-secondary animated fadeIn">
+										<div class="quick-actions-header">
+											<span class="title mb-1 fw-bold">Raccourcis</span>
+											<span class="subtitle op-8 text-center">Cliquez sur les raccourcis pour accéder rapidement à vos services favoris.</span>
+										</div>
+										<div class="quick-actions-scroll scrollbar-outer">
+											<div class="quick-actions-items">
+												<div class="row m-0">
+													<a class="col-6 col-md-4 p-0" href="">
+														<div class="quick-actions-item">
+															<div class="avatar-item bg-danger rounded-circle">
+																<i class="fa fa-history"></i>
+															</div>
+															<span class="text">Historiques</span>
+														</div>
+													</a>
+													<a class="col-6 col-md-4 p-0" href="">
+														<div class="quick-actions-item">
+															<div class="avatar-item bg-warning rounded-circle">
+																<i class="far fa-money-bill-alt"></i>
+															</div>
+															<span class="text">scolarité</span>
+														</div>
+													</a>
+													<a class="col-6 col-md-4 p-0" href="">
+														<div class="quick-actions-item">
+															<div class="avatar-item bg-info rounded-circle">
+																<i class="fas fa-file-excel"></i>
+															</div>
+															<span class="text">Relevés</span>
+														</div>
+													</a>
+													<a class="col-6 col-md-4 p-0" href="">
+														<div class="quick-actions-item">
+															<div class="avatar-item bg-success rounded-circle">
+																<i class="fas fa-envelope"></i>
+															</div>
+															<span class="text">Messages</span>
+														</div>
+													</a>
+													<a class="col-6 col-md-4 p-0" href="../../mes-documents/mes-releves-de-compte/">
+														<div class="quick-actions-item">
+															<div class="avatar-item bg-primary rounded-circle">
+																<i class="link-icon icon-film"></i>
+															</div>
+															<span class="text">Documents</span>
+														</div>
+													</a>
+													<a class="col-6 col-md-4 p-0" href="">
+														<div class="quick-actions-item">
+															<div class="avatar-item bg-secondary rounded-circle">
+																<i class="link-icon icon-folder-alt"></i>
+															</div>
+															<span class="text">Demandes</span>
+														</div>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+
+								
+								<li class="nav-item dropdown hidden-caret">
+									<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+										<div class="avatar-sm">
+											<img src="../../../../../assets/images/avatar/<?php echo $donnees['nomPhoto'];?>"  class="avatar-img rounded-circle">
+										</div>
+									</a>
+									<ul class="dropdown-menu dropdown-user animated fadeIn">
+										<div class="dropdown-user-scroll scrollbar-outer">
+											<li>
+												<div class="user-box">
+													<div class="avatar-lg"><img src="../../../../../assets/images/avatar/<?php echo $donnees['nomPhoto'];?>" alt="image profile" class="avatar-img rounded"></div>
+													<div class="u-text">
+														<h4><?php echo $donnees['NomComplet'];?></h4>
+														<p class="text-muted" style="margin-top:1px;"><?php echo $donnees['email'];?></p>
+													</div>
+												</div>
+											</li>
+
+											<li>
+												<div class="dropdown-divider"></div>
+												<a class="dropdown-item" href="../../mes-messages/index.php?param=contacter-mon-conseiller"><i class="fa fa-envelope-o"></i> Contacter l'ecole</a>
+												<div class="dropdown-divider"></div>
+												<a class="dropdown-item" href="../logout/"><i class="link-icon icon-logout"></i> Se déconnecter</a>
+											</li>
+										</div>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</nav>
+		
+					<div class="main-panel full-height">
+						<div class="container">
+							<div class="panel-header">
+								<div class="page-inner border-bottom pb-0">
+									<div class="d-flex align-items-left flex-column">
+										<div class="" style="margin-top:-20px;">
+											<h1 class="hidden-xs hidden-sm nam" ><small>Référence du compte : <strong><?php echo $donnees['numDossier'];?></strong> </small></h1>
+											<h1 class="hidden-md hidden-lg nam">
+												<small style="">
+													<?php echo $donnees['NomComplet'];?>
+												</small>
+											</h1>
+
+											<h1 class="dernConnec">
+												<small>
+													<?php 
+														if($_SESSION['mynbreSession']==0){
+															
+														?>
+															<span>Dernière session : 
+																<strong>
+																	<?php 
+																		echo $_SESSION['dernSession'];
+																	?>
+																</strong>
+															</span>
+														<?php
+														}else{
+														?>	
+															<span>Dernière session : 
+																<strong>
+																	<?php 
+																		echo $_SESSION['dernSession'];
+																	?>
+																</strong>
+															</span>
+														<?php
+														}
+													?>
+												</small>
+											</h1>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="panel-header">
+								<div class="page-inner py-41">
+									<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+										<div>
+											<h2 class="pb-2 fw-extrabold"></h2>
+											<h6 class="op-7 mb-2"></h6>
+										</div>
+										<div class="ml-md-auto py-2 py-md-0 hidden-xs hidden-sm">
+											<a href="" class="btn btn-primary btn-xs btn-round mr-2 text-white"><i class="fa fa-download"></i> Télécharger</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="page-inner mt--5">
+								<div class="row mt--2">
+								</div>
+					
+								<div id="mescomptes" class="row pt-2">
+									<div class="col-md-12">
+										<div class="card">
+											<div class="card-header">
+												<div class="card-head-row">
+													<h4 class="card-title">Mes etudes</h4>
+													<div class="card-tools">
+														<button class="btn btn-default btn-xs btn-refresh-card"><span class="fa fa-refresh"></span><span class="hidden-xs hidden-sm"> Actualiser</span></button>
+													</div>
+												</div>
+											</div>
+
+											<div class="udc" style="border:1px solid #dcdfe0">
+												<div class="handlebar-template-placeholder">
+													<div class="liste-famille-compte">
+														<ul class="list-vue1 udc-liquidite" style="border-bottom:none">
+															<li class="open" style="border-bottom:none">
+																<div class="row2 main compte-favori text-center" style="background-color:#2558a1; color:#ffffff;">
+																	<div class="col2-40 infos-compte">
+																		<strong class="meteo"><i class="fa fa-user text-white"></i></strong>
+																		<h6 class="js-goto-rop pointer text-uppercase fw-extrabold"><i class="fa fa-user hidden-xs hidden-sm text-white"></i> Compte Etudiant &nbsp; </h6> <span><?php echo "N° : ".$donnees['numeroCompte'] ;?></span>
+																	</div>
+
+																	<div class="col2-60 soldecompte infos-solde">
+																		<h6 class="udc-solde"><span class="" style="font-weight:300;">Scolarité : <strong class="text-white"><?php echo $donnees['Montant'] ." f cfa";?></strong></span></h6>
+																	</div>
+																</div>
+
+																<div class="row2 fleche js-detail-toggle"></div>
+																<div class="row-btn mobile-only" style="height:25px;">
+																	<button><i class="icon-btn1"></i></button>
+																	<button><i class="icon-btn2"></i></button>
+																</div>
+
+																<div class="row2 detail js-detail-toggle">
+																	<div class="row2 row-btn">
+																	</div>
+
+																	<div class="caracteristiques">
+																		<div class="row2 row-border">
+																			<div class="col2-30">
+																				<h6 class="fw-bold">Titulaire</h6>
+																			</div>
+																			<div class="col2-65">
+																				 <p><?php echo $donnees['NomComplet'] ;?></p>
+																			</div>
+																		</div>
+																		
+																		<div class="row2 row-border">
+																			<div class="col2-30"><h6 class="fw-bold">Adresse email</h6></div>
+
+																			<div class="col2-65">
+																				<span class="pull-right"><a href="" class="btn btn-xs btn-primary hidden-xs hidden-sm">encours</a></span>
+																				<p><?php echo $donnees['Email'] ;?></p>
+																			</div>
+																		</div>
+																		
+																		<div class="row2 row-border">
+																			  <div class="col2-30">
+																				  <h6 class="fw-bold">Numero<span class="hidden-xs hidden-sm"> de téléphone</span></h6>
+																			  </div>
+																				<div class="col2-65">
+																					<p><strong><?php echo $donnees['Phone'] ;?></strong></p>
+																				</div>
+																		</div>
+																		
+																		<?php 
+																			if($donnees['Montant']==0.00){
+																				
+																			?>
+																				<div class="row2 row-border">
+																					<div class="col2-30">
+																						<h6 class="fw-bold">Adresse <span class="text-danger">*</span></h6>
+																					</div>
+																					<div class="col2-65">
+																						<p><strong><?php echo $donnees['Adresse'] ;?></strong></p>
+																					</div>
+																				</div>
+																			<?php
+																			}else{}
+																		?>
+																		
+																		
+																		<div class="row2 row-border">
+																			<div class="col2-30"><h6 class="fw-bold">Scolarité</h6></div>
+
+																			<div class="col2-65">
+																				<span class="pull-right"><a href="" class="btn btn-xs btn-primary hidden-xs hidden-sm">Voir <span class="fa fa-plus"></span></a></span>
+																				<p> <?php echo $donnees['Montant'] ." f cfa";?> </p>
+																			</div>
+																		</div>
+																	</div>
+																	<?php 
+																		if($donnees['Montant']==0.00){
+																			
+																		?>
+																			<div class="row2 mt-4">
+																				<p class=""><small style="font-weight:300; font-size:12px"><span class="text-danger fw-bold">*</span> </small></p>
+																			</div>
+																		<?php
+																		}else{}
+																	?>
+																</div>
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+														
+											<?php 
+												if($donnees['comptetudiant']=='oui'){
+														
+												?>
+										</div>
+									</div>
+								</div>
+
+										<div class="row pt-4">
+											<div class="col-md-12">
+												<div class="card">
+													<div class="card-header">
+														<div class="card-head-row">
+															<h4 class="card-title"> Année en cours d'execution </h4>
+															<div class="card-tools hidden-xs hidden-sm">
+																<button class="btn btn-default btn-xs btn-refresh-card">
+																	<span class="fa fa-refresh"></span><span class="hidden-xs hidden-sm"> Actualiser </span></button>
+															</div>
+														</div>
+													</div>
+
+													<div class="udc" style="border:1px solid #dcdfe0">
+														<div class="handlebar-template-placeholder">
+															<div class="liste-famille-compte">
+																<ul id="cartesofferts" class="list-vue1 udc-capitalisation" style="border-bottom:none">
+																	<li class="open" style="border-bottom:none">
+																		<div class="row2 main compte-favori text-center" style="background-color:#ff7f00; color:#ffffff;">
+																			<div class="col2-40 infos-compte">
+																				<strong class="meteo"><i class="fa fa-credit-card text-white"></i></strong>
+																				<h6 class="js-goto-rop pointer text-uppercase fw-extrabold"><i class="fa fa-credit-card hidden-xs hidden-sm text-white"></i> Premiére Année &nbsp; </h6> <span></span>
+																			</div>
+
+																			<div class="col2-60 soldecompte infos-solde">
+																				<h6 class="udc-solde">
+																					<span class="" style="font-weight:300;">Scolarité : <strong class="text-white"><?php echo $donnees['Montant'] ." f cfa";?></strong></span></h6>
+																				<p></p>
+																			</div>
+																		</div>
+																		
+																		<div class="row2 fleche4 js-detail-toggle"></div>
+																		<div class="row-btn mobile-only">
+																			<button style="backgound-color:#ffffff">
+																				<i class="icon-btn1"></i></button>
+																			<button>
+																				<i class="icon-btn2"></i></button>
+																		</div>
+
+																		<div class="row2 detail js-detail-toggle">
+																			<div class="caracteristiques">
+																				<div class="row2 row-border">
+
+																	<!-- etape d'evolution du cursus scolaire -->
+																		<p><br>
+																			<style> content {padding: 20px; position: relative;}.transfer-details {margin-bottom: 30px;}.transfer-details h1 {font-weight: bold;margin-bottom: 50px;font-size: 1.6em;margin-left: 100px;}.message-details {margin-bottom: 20px;font-size: 18px;color: green;font-weight: bold;margin-top: 10px;}.message-detail {margin-bottom: 20px;font-size: 18px;color: red;font-weight: bold;margin-top: 10px;}</style>
+																			 <div class="content">
+																			 	<div class="transfer-details">
+																			 		<h1>Unité de valeur premiére (UE1) 
+																			 			<div class="message-details">
+																			 				<message>Felicitation, vous venez de valider votre premiére unité de valeur.</message>
+																			 			</div><br>
+																			 			<div class="message-detail">
+																			 				<message>Echéc, vous n'avez pas puis validé cette UE car vous avez 10 points dans la matiére A contre 12 points requis. </message>
+																			 			</div>
+																			 		</h1>
+																			 		<h1>Deuxiéme unité de valeur (UE2) 
+																			 			<div class="message-details">
+																			 				<message>Felicitation, vous venez de valider votre deuxiéme unité de valeur.</message>
+																			 			</div><br>
+																			 			<div class="message-detail">
+																			 				<message>Echéc, vous n'avez pas puis validé cette UE car vous avez 10 points dans la matiére A contre 12 points requis. </message>
+																			 			</div>
+																			 		</h1>
+																			 		<h1>Unité de valeur 3 (UE)
+																			 			<div class="message-details">
+																			 				<message>Felicitation, vous venez de valider votre troixiéme unité de valeur.</message>
+																			 			</div><br>
+																			 			<div class="message-detail">
+																			 				<message>Echéc, vous n'avez pas puis validé cette UE car vous avez 10 points dans la matiére A contre 12 points requis. </message>
+																			 			</div>
+																			 		</h1>
+																			 		<h1>Quatriéme unité de valeur (UE4)
+																			 			<div class="message-details">
+																			 				<message>Felicitation, vous avez validé cette unité, donc succés pour la premiére année.</message>
+																			 			</div><br>
+																			 			<div class="message-detail">
+																			 				<message>Echéc, vous n'avez pas puis validé cette UE car vous avez 10 points dans la matiére A contre 12 points requis. </message>
+																			 			</div>
+																			 		</h1>
+																			 	</div>
+																			 </div>
+																			</p>
+																			<!-- fin de etape d'evolution du cursus scolaire -->
+
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<?php
+									}else{
+									}
+								?>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+				<!--   Core JS Files   -->
+				<script src="assets/js/core/jquery.3.2.1.min.js"></script>
+				<script src="assets/js/core/popper.min.js"></script>
+				<script src="assets/js/core/bootstrap.min.js"></script>
+
+				<!-- jQuery UI -->
+				<script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+				<script src="assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+				<!-- jQuery Scrollbar -->
+				<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+				<!-- Moment JS -->
+				<script src="assets/js/plugin/moment/moment.min.js"></script>
+
+				<!-- Chart JS -->
+				<script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+				<!-- jQuery Sparkline -->
+				<script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+				<!-- Chart Circle -->
+				<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+				<!-- Datatables -->
+				<script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+				<!-- Bootstrap Notify -->
+				<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+				<!-- Bootstrap Toggle -->
+				<script src="assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+
+				<!-- jQuery Vector Maps -->
+				<script src="assets/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+				<script src="assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+				<!-- Google Maps Plugin -->
+				<script src="assets/js/plugin/gmaps/gmaps.js"></script>
+
+				<!-- Dropzone -->
+				<script src="assets/js/plugin/dropzone/dropzone.min.js"></script>
+
+				<!-- Fullcalendar -->
+				<script src="assets/js/plugin/fullcalendar/fullcalendar.min.js"></script>
+
+				<!-- DateTimePicker -->
+				<script src="assets/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
+
+				<!-- Bootstrap Tagsinput -->
+				<script src="assets/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+
+				<!-- Bootstrap Wizard -->
+				<script src="assets/js/plugin/bootstrap-wizard/bootstrapwizard.js"></script>
+
+				<!-- jQuery Validation -->
+				<script src="assets/js/plugin/jquery.validate/jquery.validate.min.js"></script>
+
+				<!-- Summernote -->
+				<script src="assets/js/plugin/summernote/summernote-bs4.min.js"></script>
+
+				<!-- Select2 -->
+				<script src="assets/js/plugin/select2/select2.full.min.js"></script>
+
+				<!-- Sweet Alert -->
+				<script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+				<!-- Owl Carousel -->
+				<script src="assets/js/plugin/owl-carousel/owl.carousel.min.js"></script>
+
+				<!-- Magnific Popup -->
+				<script src="assets/js/plugin/jquery.magnific-popup/jquery.magnific-popup.min.js"></script>
+
+				<!-- Atlantis JS -->
+				<script src="assets/js/atlantis.min.js"></script>
+			</body>
+		</html>
